@@ -30,3 +30,10 @@ class TodoOne(APIView):
 
         serializer = TodoSerializer(todo)
         return Response(serializer.data)
+
+    def patch(self, request, todo_id):
+        todo = Todo.objects.get(pk=todo_id)
+        serializer = TodoSerializer(data=request.data, instance=todo, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(serializer.data)
