@@ -37,3 +37,8 @@ class TodoOne(APIView):
         if serializer.is_valid():
             serializer.save()
         return Response(serializer.data)
+
+    def delete(self, request, todo_id):
+        todo = Todo.objects.get(pk=todo_id)
+        todo.delete()
+        return Response(None)
