@@ -5,6 +5,9 @@ from .models import Todo
 from .serializers import TodoSerializer
 
 class TodoList(APIView):
+    def get(self, request):
+        return Response(None)
+        
     def post(self, request):
         todo = TodoSerializer(request.data)
         return Response(todo.data)
