@@ -16,7 +16,7 @@ class TodoList(APIView):
         if todo.is_valid():
             todo_item = todo.save()
             todo_item.completed = False
-            todo_item.url = reverse('todo_one', args=[todo_item.id])
+            todo_item.url = reverse('todo_one', args=[todo_item.id], request=request)
             todo_item.save()
         return Response(todo.data)
 
@@ -25,5 +25,8 @@ class TodoList(APIView):
         return Response(None)
 
 class TodoOne(APIView):
-    pass
+    def get(self, request, todo_id):
+        todo = Todo.objects.get(pk=todo_id)
 
+        serializer = TodoSerializer(todo)
+        return Response(serializer.data)
