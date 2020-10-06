@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from .models import Todo
 from .serializers import TodoSerializer
 
@@ -13,7 +14,10 @@ class TodoList(APIView):
     def post(self, request):
         todo = TodoSerializer(data=request.data)
         if todo.is_valid():
-            todo.save()
+            todo_item = todo.save()
+            todo_item.completed = False
+            todo_item.url = reverse('todo_one', args=[todo_item.id])
+            todo_item.save()
         return Response(todo.data)
 
     def delete(self, request):
